@@ -8,8 +8,9 @@ import {
     I18nService,
 } from '@eui/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, zip } from 'rxjs';
+import { Observable, of, zip, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { EuiWebToolsService } from '@shared/services/eui-web-tools.service';
 
 @Injectable({
     providedIn: 'root',
@@ -20,6 +21,7 @@ export class AppStarterService {
     constructor(
         protected userService: UserService,
         protected i18nService: I18nService,
+        protected euiWebToolsService: EuiWebToolsService,
         @Inject(CONFIG_TOKEN) private config: EuiAppConfig,
         protected http: HttpClient,
     ) {
@@ -34,6 +36,7 @@ export class AppStarterService {
                     return this.i18nService.init();
                 }),
             ),
+            this.initWebTools()
         );
     }
 
@@ -47,6 +50,10 @@ export class AppStarterService {
             this.fetchUserDetails(),
         ).pipe(
             switchMap(([userDetails]) => this.userService.init(userDetails)));
+    }
+
+    initWebTools() {
+        return from(this.euiWebToolsService.loadLoadJs());
     }
 
     /**

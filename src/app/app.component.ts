@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
     getUserState,
@@ -11,12 +11,13 @@ import {
     EclSiteHeaderLoginEvent,
     EclSiteHeaderSearchEvent,
 } from '@eui/ecl';
+import { EuiWebToolsService } from '@shared/services/eui-web-tools.service';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     userInfos: UserState;
     // Observe state changes
     userState: Observable<UserState>;
@@ -26,12 +27,39 @@ export class AppComponent implements OnDestroy {
     isLoggedIn = false;
 
     constructor(
+        private euiWebToolsService: EuiWebToolsService,
         private store: Store<any>,
     ) {
         this.userState = this.store.select(getUserState);
         this.subs.push(this.userState.subscribe((user: UserState) => {
             this.userInfos = { ...user };
         }));
+    }
+    ngAfterViewInit(): void {
+        console.log(this.euiWebToolsService.isReady, 'this.euiWebToolsService.isReady');
+        if (!this.euiWebToolsService.isReady) {
+            const renderTranslate = this.renderTranslate.bind(this);
+            const renderCc2 = this.renderCc2.bind(this);
+            // const updateAjax = this.updateAjax.bind(this);
+            // const watchMutations = this.watchMutations.bind(this);
+            window.addEventListener('wtReady', function () {
+                // Start using $wt API.
+                // console.log(window['$wt'].exists('id_deneme'), '$wt exist');
+                renderTranslate();
+                renderCc2();
+                // updateAjax();
+                // watchMutations();
+            }, false);
+        } else {
+            this.renderTranslate();
+            this.renderCc2();
+            // this.updateAjax();
+            // this.watchMutations();
+        }
+        // window['$wt'];
+    }
+    ngOnInit(): void {
+
     }
 
     ngOnDestroy() {
@@ -55,5 +83,46 @@ export class AppComponent implements OnDestroy {
 
     onMenuItemSelected(evt: EclMenuItemSelectEvent) {
         console.log('menu item selected', evt);
+    }
+
+    private renderTranslate(): void {
+        this.euiWebToolsService.renderWebToolWidget('translate_button', {
+            service: 'etrans',
+            languages: {
+                // 'source': 'fr',
+                exclude: [],
+            },
+            dynamic: true,
+            strict: true,
+            // 'lang': 'fr',
+            renderAs: {
+                icon: true,
+                button: true,
+                link: true,
+            },
+        });
+    }
+
+    private renderCc2() {
+        return this.euiWebToolsService.loadWebToolWidget({
+            utility: 'cck',
+            url: 'https://my.ec.europa.eu/cookie-policy_{lang}',
+        }).then(() => {
+            console.log(window['$wt'].cookie, 'coookiee instance');
+            console.log(window['$wt'].cookie.get('cck1'), 'coookiee');
+            console.log(window['$wt'], 'coookiee');
+            window.addEventListener('cck_banner_displayed', (evt) => {
+                console.log(evt, 'cck_banner_displayed');
+            });
+            window.addEventListener('cck_all_accepted', (evt) => {
+                console.log(evt, 'cck_all_accepted');
+            });
+            window.addEventListener('cck_technical_accepted', (evt) => {
+                console.log(evt, 'cck_technical_accepted');
+            });
+            window.addEventListener('cck_banner_hidden', (evt) => {
+                console.log(evt, 'cck_banner_hidden');
+            });
+        });
     }
 }
