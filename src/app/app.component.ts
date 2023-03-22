@@ -35,9 +35,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.userInfos = { ...user };
         }));
     }
+
     ngAfterViewInit(): void {
         console.log(this.euiWebToolsService.isReady, 'this.euiWebToolsService.isReady');
         if (!this.euiWebToolsService.isReady) {
+            const renderMap = this.renderMap.bind(this);
             const renderTranslate = this.renderTranslate.bind(this);
             const renderCc2 = this.renderCc2.bind(this);
             // const updateAjax = this.updateAjax.bind(this);
@@ -45,12 +47,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             window.addEventListener('wtReady', function () {
                 // Start using $wt API.
                 // console.log(window['$wt'].exists('id_deneme'), '$wt exist');
+                renderMap();
                 renderTranslate();
                 renderCc2();
                 // updateAjax();
                 // watchMutations();
             }, false);
         } else {
+            this.renderMap();
             this.renderTranslate();
             this.renderCc2();
             // this.updateAjax();
@@ -58,6 +62,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         // window['$wt'];
     }
+
     ngOnInit(): void {
 
     }
@@ -83,6 +88,36 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     onMenuItemSelected(evt: EclMenuItemSelectEvent) {
         console.log('menu item selected', evt);
+    }
+
+    private renderMap() {
+        this.euiWebToolsService.renderWebToolWidget('map_participants', {
+            service: 'map',
+            version: '3.0',
+            map: {
+                center: [52, 10],
+                zoom: 4,
+                background: ['positron']
+            },
+            layers: {
+                countries: [{
+                    data: ['EU28'],
+                    options: {
+                        events: {
+                            click: 'https://europa.eu/european-union/about-eu/countries/member-countries/{lowercase:CNTR_NAME}_{lang}'
+                        },
+                        label: true,
+                        style: {
+                            color: '#4d3d3d',
+                            weight: 1,
+                            opacity: 1,
+                            fillColor: '#f93',
+                            fillOpacity: 0.5
+                        }
+                    },
+                }]
+            }
+        });
     }
 
     private renderTranslate(): void {
