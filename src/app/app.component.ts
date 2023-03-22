@@ -44,7 +44,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             const renderCc2 = this.renderCc2.bind(this);
             // const updateAjax = this.updateAjax.bind(this);
             // const watchMutations = this.watchMutations.bind(this);
-            window.addEventListener('wtReady', function () {
+            window.addEventListener('wtReady', () => {
                 // Start using $wt API.
                 // console.log(window['$wt'].exists('id_deneme'), '$wt exist');
                 // renderMap();
