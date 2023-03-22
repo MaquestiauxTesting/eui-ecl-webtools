@@ -1,0 +1,262 @@
+<ecl-app>
+    <ecl-site-header siteName="Site name">
+
+        <div eclSiteHeaderEnvironment>Environment</div>
+
+        <ecl-site-header-action>
+            <ecl-site-header-login 
+                [isLoggedIn]="isLoggedIn" 
+                (login)="onLogin($event)">
+                <p eclSiteHeaderLoginDescription>
+                    {{ 'ecl.site-header.LOGGED-IN-AS' | translate }} {{ userInfos?.fullName }}
+                </p>
+                <hr eclSiteHeaderLoginSeparator />
+                <a eclLink variant="standalone" href="#" (click)="onLogout($event)">
+                    {{ 'ecl.site-header.LOGOUT' | translate }}
+                </a>
+            </ecl-site-header-login>
+
+            <ecl-site-header-language></ecl-site-header-language>
+
+            <ecl-site-header-search (search)="onSearch($event)"></ecl-site-header-search>
+        </ecl-site-header-action>
+
+        <ecl-menu (menuItemSelect)="onMenuItemSelected($event)">
+            <ecl-menu-item label="Home"></ecl-menu-item>
+            <ecl-menu-item label="Item 1">
+                <ecl-menu-mega>
+                    <ecl-menu-mega-item label="Item 1.1"></ecl-menu-mega-item>
+                    <ecl-menu-mega-item label="Item 1.2"></ecl-menu-mega-item>
+                    <ecl-menu-mega-item label="Item 1.3" [isCurrent]="true"></ecl-menu-mega-item>
+                </ecl-menu-mega>
+
+            </ecl-menu-item>
+
+            <ecl-menu-item label="Item 2">
+                <ecl-menu-mega>
+                    <ecl-menu-mega-item label="Item 2.1"></ecl-menu-mega-item>
+                    <ecl-menu-mega-item label="Item 2.2"></ecl-menu-mega-item>
+                    <ecl-menu-mega-item label="Item 2.3"></ecl-menu-mega-item>
+                </ecl-menu-mega>
+            </ecl-menu-item>
+
+            <ecl-menu-item label="Item 3">
+                <ecl-menu-mega>
+                    <ecl-menu-mega-item label="Item 3.1"></ecl-menu-mega-item>
+                    <ecl-menu-mega-item label="Item 3.2"></ecl-menu-mega-item>
+                    <ecl-menu-mega-item label="Item 3.3"></ecl-menu-mega-item>
+                </ecl-menu-mega>
+            </ecl-menu-item>
+        </ecl-menu>
+    </ecl-site-header>
+
+    <ecl-page-header>
+        <ecl-breadcrumb>
+            <ecl-breadcrumb-segment>Home</ecl-breadcrumb-segment>
+            <ecl-breadcrumb-segment>European Commission</ecl-breadcrumb-segment>
+            <ecl-breadcrumb-segment [isCurrentPage]="true">ECL</ecl-breadcrumb-segment>
+        </ecl-breadcrumb>
+
+        <div eclPageHeaderMeta>
+            <span eclPageHeaderMetaItem>
+                Auto generated template
+            </span>
+        </div>
+        <h1 eclPageHeaderTitle>Europa Component Library</h1>
+        <div eclPageHeaderDescriptionContainer>
+            <p eclPageHeaderDescription>
+                The Europa Component Library (ECL) is a comprehensive style guide containing the design elements and visual standards that make up all Europa websites and applications.
+            </p>
+        </div>
+    </ecl-page-header>
+
+    <div class="ecl-u-pv-xl">
+        <router-outlet></router-outlet>
+    </div>
+
+    <ecl-site-footer>
+        <div eclSiteFooterRow>
+            <div eclSiteFooterColumn>
+                <div eclSiteFooterSection>
+                    <h2 eclSiteFooterTitle>
+                        <a eclLink
+                            variant="standalone"
+                            eclSiteFooterTitleLink
+                            routerLink="/">Site name
+                        </a>
+                    </h2>
+                    <div eclSiteFooterDescription>This site is managed by the Directorate-General for &quot;DG
+                        identification&quot;
+                    </div>
+                </div>
+            </div>
+            <div eclSiteFooterColumn>
+                <div eclSiteFooterSection>
+                    <h2 eclSiteFooterTitle
+                        [isSeparator]="true">
+                        Contact us
+                    </h2>
+                    <ul eclSiteFooterList>
+                        <li eclSiteFooterListItem>
+                            <a eclLink
+                                eclSiteFooterLink
+                                [attr.aria-label]="'ecl.footer.CONTACT-INFO-DG' | translate"
+                                variant="standalone"
+                                routerLink="/">
+                                {{ 'ecl.footer.CONTACT-INFO-DG' | translate }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div eclSiteFooterSection>
+                    <h2 eclSiteFooterTitle
+                        [isSeparator]="true">
+                        Follow us on
+                    </h2>
+                    <ul eclSiteFooterList
+                        [isInline]="true">
+                        <li eclSiteFooterListItem>
+                            <a eclLink
+                                eclSiteFooterLink
+                                aria-label="Facebook"
+                                variant="standalone"
+                                routerLink="/">
+                                <ecl-icon iconSet="social-media"
+                                    icon="facebook-negative"
+                                    size="xs">
+                                </ecl-icon>
+                                <span eclLinkLabel>Facebook</span>
+                            </a>
+                        </li>
+                        <li eclSiteFooterListItem>
+                            <a eclLink
+                                eclSiteFooterLink
+                                aria-label="Twitter"
+                                variant="standalone"
+                                routerLink="/">
+                                <ecl-icon iconSet="social-media"
+                                    icon="twitter-negative"
+                                    size="xs">
+                                </ecl-icon>
+                                <span eclLinkLabel>Twitter</span>
+                            </a>
+                        </li>
+                        <li eclSiteFooterListItem>
+                            <a eclLink
+                                eclSiteFooterLink
+                                aria-label="Linkedin"
+                                variant="standalone"
+                                routerLink="/">
+                                <ecl-icon iconSet="social-media"
+                                    icon="linkedin-negative"
+                                    size="xs">
+                                </ecl-icon>
+                                <span eclLinkLabel>Linkedin</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div eclSiteFooterColumn>
+                <div eclSiteFooterSection>
+                    <h2 eclSiteFooterTitle
+                        [isSeparator]="true">
+                        {{ 'ecl.footer.ABOUT-US' | translate }}
+                    </h2>
+                    <ul eclSiteFooterList>
+                        <li eclSiteFooterListItem>
+                            <a eclLink
+                                eclSiteFooterLink
+                                [attr.aria-label]="'ecl.footer.INFO-ABOUT-DG' | translate"
+                                variant="standalone"
+                                routerLink="/">
+                                {{ 'ecl.footer.INFO-ABOUT-DG' | translate }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div eclSiteFooterSection>
+                    <h2 eclSiteFooterTitle
+                        [isSeparator]="true">
+                        {{ 'ecl.footer.RELATED-SITES' | translate }}
+                    </h2>
+                    <ul eclSiteFooterList>
+                        <li eclSiteFooterListItem>
+                            <a eclLink
+                                eclSiteFooterLink
+                                aria-label="Related link 1"
+                                variant="standalone"
+                                routerLink="/">
+                                Related link 1
+                            </a>
+                        </li>
+                        <li eclSiteFooterListItem>
+                            <a eclLink
+                                eclSiteFooterLink
+                                aria-label="Related link 2"
+                                variant="standalone"
+                                routerLink="/">
+                                Related link 2
+                            </a>
+                        </li>
+                        <li eclSiteFooterListItem>
+                            <a eclLink
+                                eclSiteFooterLink
+                                aria-label="Related link 3"
+                                variant="standalone"
+                                routerLink="/">
+                                Related link 3
+                            </a>
+                        </li>
+                        <li eclSiteFooterListItem>
+                            <a eclLink
+                                eclSiteFooterLink
+                                aria-label="Related link 4"
+                                variant="standalone"
+                                routerLink="/">
+                                Related link 4
+                            </a>
+                        </li>
+                        <li eclSiteFooterListItem>
+                            <a eclLink
+                                eclSiteFooterLink
+                                aria-label="Related link 5"
+                                variant="standalone"
+                                routerLink="/">
+                                Related link 5
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div eclSiteFooterRow>
+            <div eclSiteFooterColumn>
+                <div eclSiteFooterSection
+                    [isCondensed]="true">
+                    <div eclSiteFooterContent>{{ 'ecl.footer.MORE-INFO' | translate }}:</div>
+                    <ul eclSiteFooterList>
+                        <li eclSiteFooterListItem>
+                            <a eclLink
+                                eclSiteFooterLink
+                                aria-label="Class name 1"
+                                variant="standalone"
+                                routerLink="/">
+                                Class name 1
+                            </a>
+                        </li>
+                        <li eclSiteFooterListItem>
+                            <a eclLink
+                                eclSiteFooterLink
+                                aria-label="Class name 2"
+                                variant="standalone"
+                                routerLink="/">
+                                Class name 2
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </ecl-site-footer>
+</ecl-app>
